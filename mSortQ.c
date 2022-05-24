@@ -29,7 +29,7 @@ void merge(int *arr, int *follower, int s, int m, int e) {
         arr[k++] = tempL[i++];
     }
     while (j < n2) {
-        follower[k] = tempfol[j];
+        follower[k] = tempfol2[j];
         arr[k++] = tempR[j++];
     }
 }
@@ -38,39 +38,44 @@ void mergeSort(int *arr,int *follower, int s, int e) {
     if (s >= e)
         return;
     int m = s + (e - s)/2;
-    mergeSort(arr, s, m, follower);
-    mergeSort(arr, m + 1, e, follower);
-    merge(arr, s, m, e, follower);
+    mergeSort(arr,follower, s, m);
+    mergeSort(arr,follower, m + 1, e);
+    merge(arr, follower,s, m, e);
 }
-int max(int a,int b){
-    if(a>b){
-        return a;
+void printA(int *arr, int n){
+    for(int i =0; i<n; i++){
+        printf("%d ", arr[i]);
     }
-    return b;
 }
+
 int main(){
     int n,m;
-    int arr[m];
-    int follower[m];
     printf("enter n and m: ");
     scanf("%d",&n);
     scanf("%d\n", &m);
-
+    int arr[m];
+    int follower[m];
     
     for(int i =0; i<m; i++){
         scanf("%d", &arr[i]);
         scanf("%d\n", &follower[i]);
     }
     
-    for(int j =0; j<m; j++){
-        printf("%d ", arr[j]);
+    mergeSort(arr, follower,0, m - 1);    
+
+    // int pt = arr[0];
+    int chk  = 1;
+    for(int q = 0; q<m; q++){
+        if(chk == arr[q] ){
+            printf("%d ", follower[q]);
+            pt = arr[q];
+        }
+        else if (++chk == arr[q]){
+            printf("\n%d", follower[q]);
+        }
+        else{
+            printf("-1\n"); 
+        }
     }
-
-    mergeSort(arr,0, m - 1, follower);
-
-    for(int j =0; j<m; j++){
-        printf("%d ", arr[j]);
-    }
-
     return 0;
 } 
