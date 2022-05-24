@@ -46,13 +46,23 @@ void mergeSort(int *arr, int s, int e) {
     merge(arr, s, m, e);
 }
 
+int min(int a, int b){
+    if(a < b){
+        return a;
+    }
+    else{
+        return b;
+    }
+}
+
 int main(void) {
     int t;
     scanf("%d\n",&t);
     
     while(t-- > 0){
-        int n,h;
-        scanf("%d %d\n", &n, &h);
+        int n;
+        long long h;
+        scanf("%d %ld\n", &n, &h);
         
         int times[n];
 
@@ -61,8 +71,51 @@ int main(void) {
             scanf("%d", &times[i]);
         }
         getchar();
-        printA(times, n);
 
+        if(n == 1){
+            printf("%d", h);
+            continue;
+        }
+        mergeSort(times,0, n - 1);
+        // printA(times, n );
+        // printf("\n");
+        int timeDiff[n - 1];
+        for(int i =0; i<n - 1; i++){
+            timeDiff[i] = times[i+1] - times[i];
+        }
+        // printA(timeDiff, n - 1);
+        // printf("\n");
+
+        int max = -1;
+        int diffSum = 0;
+        for(int k =0; k<n - 1; k++){
+            if(timeDiff[k] > max){
+                max = timeDiff[k];
+            }
+            diffSum += timeDiff[k];
+        }
+
+        int attack = 0;
+        int finalAns = 0;
+        int flag = 1;
+        for(int st =1; st<=max; st++){
+            attack = st;
+            for(int j = 0; j < n - 1; j++ ){
+                attack += min(st, timeDiff[j]);
+            }
+            if(attack >= h){
+                finalAns = st;
+                flag = 0;
+                break;
+            }
+        }
+
+        if(flag){
+            finalAns = h - diffSum;
+        }
+
+        printf("%d\n", finalAns);
+        
         
     }
 
@@ -72,5 +125,7 @@ int main(void) {
         }
         printf("\n");
     }
+
+
 }
 
