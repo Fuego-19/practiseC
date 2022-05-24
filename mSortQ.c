@@ -50,7 +50,7 @@ void printA(int *arr, int n){
 
 int main(){
     int n,m;
-    printf("enter n and m: ");
+    // printf("enter n and m: ");
     scanf("%d",&n);
     scanf("%d\n", &m);
     int arr[m];
@@ -62,20 +62,38 @@ int main(){
     }
     
     mergeSort(arr, follower,0, m - 1);    
-
-    // int pt = arr[0];
+    
+    
+    int ptr = arr[0];
     int chk  = 1;
-    for(int q = 0; q<m; q++){
-        if(chk == arr[q] ){
+    int q =0;
+    while(chk<=n){
+        if(chk == arr[q] && q < m ){
             printf("%d ", follower[q]);
-            pt = arr[q];
+
+            if(q < m - 1){
+                if(arr[q+1] != arr[q]){
+                    printf("\n");
+                    chk++;
+                }
+            }
+            else if(q == m - 1){
+                printf("\n");
+                chk++;
+            }
+            q++;
+            continue;
         }
-        else if (++chk == arr[q]){
-            printf("\n%d", follower[q]);
-        }
-        else{
+        else if (chk != arr[q]){
             printf("-1\n"); 
+            chk++;
+            continue;
         }
+        // chk++;
+        // if(chk == arr[q]){
+        //     printf("\n%d", follower[q]);
+        //     q++;
+        // }
     }
     return 0;
 } 
