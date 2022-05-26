@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 void printA(int *arr, int n){
     for(int i =0; i<n; i++){
         printf("%d ", arr[i]);
@@ -62,7 +63,7 @@ int main(void) {
     while(t-- > 0){
         int n;
         long long h;
-        scanf("%d %ld\n", &n, &h);
+        scanf("%d %lld\n", &n, &h);
         
         int times[n];
 
@@ -73,7 +74,7 @@ int main(void) {
         getchar();
 
         if(n == 1){
-            printf("%d", h);
+            printf("%d\n", h);
             continue;
         }
         mergeSort(times,0, n - 1);
@@ -88,6 +89,8 @@ int main(void) {
 
         int max = -1;
         int diffSum = 0;
+        long long finalAns = 0;
+
         for(int k =0; k<n - 1; k++){
             if(timeDiff[k] > max){
                 max = timeDiff[k];
@@ -95,37 +98,63 @@ int main(void) {
             diffSum += timeDiff[k];
         }
 
-        int attack = 0;
-        int finalAns = 0;
+        int checker = max + diffSum; // when k = max difference 
+        if(h >= checker){
+            finalAns = h - diffSum;
+            printf("%d\n", finalAns);
+            continue;
+        }
+        
+        long long loopChecker = abs(h - 1);
+        long long loopChecker2 = abs(h - max);
+
+        long long attack = 0;
         int flag = 1;
-        for(int st =1; st<=max; st++){
-            attack = st;
-            for(int j = 0; j < n - 1; j++ ){
-                attack += min(st, timeDiff[j]);
-            }
-            if(attack >= h){
-                finalAns = st;
-                flag = 0;
-                break;
+
+        if(loopChecker2 < loopChecker){
+            
+            for(int st = max/2 + 100; st>0; st--){
+                attack = st;
+                for(int j = 0; j < n - 1; j++ ){
+                    attack += min(st, timeDiff[j]);
+                }
+                if(attack < h){
+                    finalAns = st + 1;
+                    flag = 0;
+                    break;
+                }
+                else if(attack == h){
+                    finalAns = st;
+                    flag = 0; 
+                    break;
+                }
             }
         }
-
+        else{
+            
+            for(int st =1; st<=max/2 + 100; st++){
+                attack = st;
+                for(int j = 0; j < n - 1; j++ ){
+                    attack += min(st, timeDiff[j]);
+                }
+                if(attack >= h){
+                    finalAns = st;
+                    flag = 0;
+                    break;
+                }
+            }
+            
+        }
+        
         if(flag){
             finalAns = h - diffSum;
         }
 
         printf("%d\n", finalAns);
         
-        
-    }
 
-    void printA(int *arr, int n){
-        for(int i =0; i<n; i++){
-            printf("%d ", arr[i]);
-        }
-        printf("\n");
     }
-
+       
 
 }
 
